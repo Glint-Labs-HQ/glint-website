@@ -31,6 +31,9 @@
     .nav-logo img { height: 32px; width: auto; }
     .nav-contact { color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid rgba(255,255,255,0.2); padding: 8px 36px; border-radius: 8px; transition: all 0.2s; }
     .nav-contact:hover { color: #fff; border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06); }
+    @media (max-width: 960px) {
+      .nav-contact { padding: 8px 20px; }
+    }
 
     /* HERO */
     #hero { position: relative; min-height: 100vh; background: var(--navy); display: flex; align-items: center; overflow: hidden; }
@@ -851,13 +854,11 @@
   var mailHref = ['mai','lto',':','mar','tin','@','gli','ntl','abs','.io'].join('');
 
   // Contact buttons: flip to reveal email on click, also attempt mailto
-  ['nav-contact', 'cta-contact-btn'].forEach(function(id) {
-    var el = document.getElementById(id);
+  function setupFlip(el) {
     if (!el) return;
     el.href = mailHref;
     el.addEventListener('click', function(e) {
       e.preventDefault();
-      // Flip the button to show email
       if (!el.classList.contains('flipped')) {
         el.style.width = el.offsetWidth + 'px';
         el.style.height = el.offsetHeight + 'px';
@@ -875,10 +876,26 @@
           el.style.paddingRight = '';
         }, 6000);
       }
-      // Also attempt mailto
       window.open(mailHref, '_self');
     });
-  });
+  }
+
+  // CTA button always gets the flip
+  setupFlip(document.getElementById('cta-contact-btn'));
+
+  // Nav button: flip on desktop only, plain mailto on mobile
+  var navBtn = document.getElementById('nav-contact');
+  if (navBtn) {
+    navBtn.href = mailHref;
+    if (window.innerWidth > 960) {
+      setupFlip(navBtn);
+    } else {
+      navBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.open(mailHref, '_self');
+      });
+    }
+  }
 
   var linkedInEl = document.getElementById('footer-linkedin');
   if (linkedInEl) linkedInEl.href = 'https://www.linked' + 'in.com/company/glint-labs-hq/';
