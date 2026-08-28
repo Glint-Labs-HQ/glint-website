@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Glint Labs</title>
+  <meta name="description" content="How Glint Labs handles personal data collected through glintlabs.io.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://glintlabs.io/privacy.html">
+
+  <link rel="icon" href="/favicon/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-dark-32x32.png" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-light-32x32.png" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+
+  <script defer src="https://cloud.umami.is/script.js"
+          data-website-id="598b4a87-fbc4-4971-a522-f72aa821f511"
+          data-domains="glintlabs.io"></script>
+
+  <style>
+    /* Outfit — self-hosted, same files as index.html. Only the three weights
+       this page uses. No request ever leaves glintlabs.io. */
+    @font-face {
+      font-family: 'Outfit'; font-style: normal; font-weight: 400; font-display: swap;
+      src: url('/fonts/outfit-latin-400-normal.woff2') format('woff2');
+      unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+    }
+    @font-face {
+      font-family: 'Outfit'; font-style: normal; font-weight: 500; font-display: swap;
+      src: url('/fonts/outfit-latin-500-normal.woff2') format('woff2');
+      unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+    }
+    @font-face {
+      font-family: 'Outfit'; font-style: normal; font-weight: 700; font-display: swap;
+      src: url('/fonts/outfit-latin-700-normal.woff2') format('woff2');
+      unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+    }
+
+    :root {
+      --navy: #0D1B2A; --cream: #FAF9F6;
+      --gold: #D4AF37; --gold-light: #DEC055;
+      --text-dark: #0D1B2A; --text-body: #2E3D50; --text-muted: #6B7585;
+      --rule: #E2DFD6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Outfit", sans-serif;
+      background: var(--cream); color: var(--text-body);
+      font-size: 17px; line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .bar { background: var(--navy); padding: 22px 0; }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 28px; }
+    .bar .wrap { display: flex; align-items: center; justify-content: space-between; }
+    .bar img { height: 26px; display: block; }
+    .bar a.back {
+      color: rgba(255,255,255,0.75); font-size: 14px; font-weight: 500;
+      text-decoration: none; transition: color 0.2s;
+    }
+    .bar a.back:hover { color: #fff; }
+
+    main { padding: 72px 0 88px; }
+    h1 { font-size: 40px; font-weight: 700; color: var(--text-dark); line-height: 1.2; letter-spacing: -0.02em; }
+    .updated { margin-top: 14px; color: var(--text-muted); font-size: 15px; }
+    .lede { margin-top: 28px; font-size: 18px; line-height: 1.7; color: var(--text-dark); }
+
+    h2 {
+      font-size: 20px; font-weight: 700; color: var(--text-dark);
+      margin: 48px 0 16px; padding-top: 26px; border-top: 1px solid var(--rule);
+    }
+    h2 .num { color: var(--gold); margin-right: 10px; font-variant-numeric: tabular-nums; }
+    h3 {
+      font-size: 16.5px; font-weight: 500; font-style: italic;
+      color: var(--text-dark); margin: 26px 0 8px;
+    }
+    strong { font-weight: 500; color: var(--text-dark); }
+    p { margin-bottom: 16px; }
+    ul { margin: 0 0 16px 22px; }
+    li { margin-bottom: 8px; }
+    a { color: #9A7D18; }
+    a:hover { color: var(--gold); }
+
+    table { width: 100%; border-collapse: collapse; margin: 18px 0 22px; font-size: 15.5px; }
+    th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+    th { font-weight: 500; color: var(--text-dark); background: rgba(13,27,42,0.035); }
+
+    .fill { background: #FBF3D8; border-bottom: 1px solid var(--gold); padding: 1px 5px; font-weight: 500; }
+
+    footer { background: var(--navy); padding: 44px 0 38px; }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 24px; flex-wrap: wrap;
+    }
+    .f-logo { opacity: 0.5; }
+    .f-logo img { height: 26px; width: auto; display: block; }
+    .f-nav { display: flex; align-items: center; gap: 22px; font-size: 14px; color: rgba(255,255,255,0.55); }
+    .f-link { color: inherit; text-decoration: none; transition: opacity 0.2s; }
+    .f-link:hover { opacity: 0.7; }
+    .f-link[aria-current="page"] { color: var(--gold); }
+    .footer-rule { height: 1px; background: rgba(255,255,255,0.07); margin: 26px 0 22px; }
+    .footer-legal {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 12px 32px; flex-wrap: wrap;
+      font-size: 13px; color: rgba(255,255,255,0.28); line-height: 1.65;
+    }
+    .f-addr { font-style: normal; }
+
+    @media (max-width: 620px) {
+      .footer-top { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .footer-legal { flex-direction: column; align-items: flex-start; gap: 8px; }
+      body { font-size: 16px; }
+      main { padding: 48px 0 60px; }
+      h1 { font-size: 31px; }
+      .lede { font-size: 17.5px; }
+      table, thead, tbody, th, td, tr { display: block; }
+      thead { display: none; }
+      td { border: none; padding: 3px 0; }
+      tr { border-bottom: 1px solid var(--rule); padding: 14px 0; }
+      td:first-child { font-weight: 500; color: var(--text-dark); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="wrap">
+    <a href="/"><img src="logo.svg" alt="Glint Labs"></a>
+    <a class="back" href="/">Back to site</a>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated 28 August 2026</p>
+
+    <p class="lede">Glint Labs, Inc. (hereinafter &ldquo;<strong>Glint Labs</strong>&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo; or &ldquo;our&rdquo;), a corporation organised under the laws of the State of Delaware, United States, is committed to protecting the personal information (hereinafter &ldquo;<strong>Personal Data</strong>&rdquo;) that you share with us. This Privacy Policy sets out what Personal Data we collect, the purposes for which we process it, and the legal bases on which we rely.</p>
+
+    <p>This Privacy Policy applies to Personal Data collected through the website <strong>glintlabs.io</strong> (hereinafter the &ldquo;<strong>Website</strong>&rdquo;). It does not apply to information collected by Glint Labs through any other means, nor to any third-party website that may be reached from the Website.</p>
+
+    <h2><span class="num">1.</span>Data controller and contact details</h2>
+    <p>The data controller responsible for the processing described in this Privacy Policy is:</p>
+    <p>Glint Labs, Inc.<br>
+    228 Park Ave S, PMB 85451<br>New York, NY 10003<br>United States<br>
+    Email: <a href="mailto:hello@glintlabs.io">hello@glintlabs.io</a></p>
+    <p>If you have any request concerning your Personal Data, any question about this Privacy Policy, or if you wish to exercise the rights described in Section 10, please contact the data controller at the address above. There is no charge for doing so.</p>
+
+    <h2><span class="num">2.</span>Type and source of Personal Data</h2>
+
+    <h3>Browsing data</h3>
+    <p>In the course of their normal operation, the systems used to deliver the Website record certain technical information in server logs. The transmission of this information is inherent in the use of internet communication protocols. It includes the IP address of the device used to access the Website, the resources requested, the time of each request and technical parameters relating to your browser and operating system. This information is not collected in order to be associated with identified individuals, and is used solely to deliver the Website securely and to maintain its correct operation.</p>
+
+    <h3>Analytics data</h3>
+    <p>We use a privacy-focused analytics service to understand how the Website is used. This service sets no cookies and stores no information on your device. Visitors are counted by means of a hash value that is regenerated periodically and cannot be used to identify you or to recognise you across visits, and no profile of you is created or maintained. The information available to us is aggregated and consists of the approximate number of visits, the country and referring source of those visits, the sections of the Website reached, and whether the contact form was opened.</p>
+
+    <h3>Personal Data you provide voluntarily</h3>
+    <p>Glint Labs collects and processes the Personal Data that you provide directly and voluntarily when you submit the contact form on the Website or write to the email address published on it. The items of Personal Data collected through the contact form are your first name, last name, business email address, the company you represent where you choose to supply it, and the content of your message. Where you write to us by email, we collect your email address together with any further Personal Data contained in your message.</p>
+    <p>The provider that delivers contact form submissions to our inbox also records the IP address from which a submission originates, for the sole purpose of detecting and filtering automated abuse.</p>
+
+    <h2><span class="num">3.</span>Purposes and legal basis of the processing</h2>
+    <p>Your Personal Data may be processed by Glint Labs for the following purposes:</p>
+    <ul>
+      <li>to respond to your enquiry and to conduct the correspondence that follows from it;</li>
+      <li>to take steps at your request prior to entering into a commercial relationship;</li>
+      <li>to operate, secure and maintain the Website;</li>
+      <li>to compile aggregated statistics on the use of the Website.</li>
+    </ul>
+    <p>Where your Personal Data is processed in order to respond to an enquiry or to take steps prior to entering into a contract, the legal basis is Article 6(1)(b) of the General Data Protection Regulation. Where your Personal Data is processed in order to operate and secure the Website and to compile aggregated statistics on its use, the legal basis is our legitimate interest under Article 6(1)(f) of the General Data Protection Regulation in maintaining a functioning website and in understanding whether it serves its purpose.</p>
+    <p>We do not process your Personal Data for advertising purposes, we do not carry out profiling, and we do not make decisions about you by automated means.</p>
+
+    <h2><span class="num">4.</span>Nature of the provision</h2>
+    <p>The provision of your Personal Data is optional. However, if you wish to contact us through the Website, you must complete the mandatory fields of the contact form, failing which we will not be able to reply to you.</p>
+    <p>We do not operate a mailing list and we will not send you marketing communications as a result of contacting us.</p>
+
+    <h2><span class="num">5.</span>Cookies and similar technologies</h2>
+    <p>The Website does not use cookies, local storage or any comparable technology for analytics, advertising or tracking purposes, and it does not place any non-essential information on your device. For this reason no consent banner is presented and no separate cookie policy is required.</p>
+
+    <h2><span class="num">6.</span>Method of processing and security</h2>
+    <p>Your Personal Data is processed lawfully and fairly, and only for the purposes for which it was collected. The Website is served exclusively over an encrypted connection. Access to Personal Data within Glint Labs is limited to those persons who require it in order to perform their duties, and those persons are bound by an obligation of confidentiality. We maintain technical and organisational measures appropriate to the nature of the data and the risks involved, intended to protect against loss, alteration, unauthorised disclosure and unauthorised access.</p>
+
+    <h2><span class="num">7.</span>Recipients and service providers</h2>
+    <p>Where necessary for, or instrumental to, the purposes set out above, Glint Labs may entrust the processing of Personal Data to external service providers. These providers act on behalf of Glint Labs as data processors, are bound by a contractual obligation of confidentiality, and are required to apply appropriate measures to protect your Personal Data. They may not use your Personal Data for their own purposes.</p>
+    <p>The categories of service provider engaged in connection with the Website are a website hosting provider, a provider that delivers contact form submissions to our inbox, a website analytics provider, and a business email provider. Details of the specific providers engaged at any given time are available on request from the contact address given in Section 1.</p>
+    <p>Your Personal Data will not otherwise be disclosed to third parties, except where we are required to do so by applicable law or by a competent authority. Glint Labs does not sell Personal Data under any circumstances.</p>
+    <p>Where the Website links to a service operated by a third party, including our scheduling provider, no Personal Data is transmitted to that third party unless and until you choose to follow the link, at which point the privacy policy of that provider applies.</p>
+
+    <h2><span class="num">8.</span>Transfers outside the European Economic Area</h2>
+    <p>Certain of the service providers referred to in Section 7 are established outside the European Economic Area, including in the United States. Where Personal Data is transferred to a country outside the European Economic Area, the transfer is carried out in accordance with Chapter V of the General Data Protection Regulation, on the basis either of the EU&ndash;US Data Privacy Framework where the recipient is certified under it, or of the Standard Contractual Clauses adopted by the European Commission. Documentation relating to these safeguards is available on request from the contact address given in Section 1.</p>
+
+    <h2><span class="num">9.</span>Data retention period</h2>
+    <p>Personal Data will be kept (i) for as long as is required to carry out the purposes for which the Personal Data was collected, or (ii) until you object to our processing of your Personal Data, whichever occurs first.</p>
+    <p>Aggregated analytics data is retained for six months and is then deleted automatically.</p>
+    <p>Notwithstanding the above, we may retain limited information for a longer period where required to do so by applicable law.</p>
+
+    <h2><span class="num">10.</span>Your rights</h2>
+    <p>Subject to the conditions laid down by applicable data protection law, you have the right to obtain confirmation as to whether your Personal Data is being processed and to be informed of the characteristics of that processing; to obtain a copy of your Personal Data; to have inaccurate Personal Data rectified; to have your Personal Data erased; to obtain a restriction of the processing; to receive your Personal Data in a structured, commonly used and machine-readable format and to have it transmitted to another controller; and to object to processing carried out on the basis of our legitimate interest.</p>
+    <p>Requests may be addressed to the contact details given in Section 1 and will be answered within one month of receipt.</p>
+    <p>You further have the right to lodge a complaint with the supervisory authority of the Member State in which you reside or work, or in which the alleged infringement took place. We would ask you to raise the matter with us first, though you are under no obligation to do so.</p>
+
+    <h2><span class="num">11.</span>Minors</h2>
+    <p>The Website is directed at business users. You must be over 16 years of age in order to provide us with your Personal Data. If Glint Labs becomes aware that Personal Data has been provided by a minor without the consent of a parent or legal guardian, that Personal Data will be deleted or rendered anonymous.</p>
+
+    <h2><span class="num">12.</span>Amendments to this Privacy Policy</h2>
+    <p>Glint Labs reserves the right to amend this Privacy Policy. The version in force at any time is the version published on the Website, identified by the version number and date shown at the top of this page. Where an amendment materially affects the processing of your Personal Data, the change will be described here rather than made without notice.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="f-logo"><a href="/"><img src="logo.svg" alt="Glint Labs"></a></div>
+      <div class="f-nav">
+        <a class="f-link" href="/privacy.html" aria-current="page">Privacy Policy</a>
+        <a class="f-link" href="https://www.linkedin.com/company/glint-labs-hq/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-legal">
+      <address class="f-addr">228 Park Ave S, PMB 85451, New York, NY 10003, United States</address>
+      <div>© 2026 Glint Labs, Inc. All rights reserved · Patent pending</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
