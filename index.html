@@ -33,6 +33,19 @@
   <meta name="twitter:image" content="https://glintlabs.io/og-image.png">
   <meta name="twitter:image:alt" content="Glint Labs — give every product a fingerprint, embedded directly into its design">
   
+  <!-- ANALYTICS
+       Paste your Umami snippet on the line below this comment. Get the
+       website ID from Umami Cloud (Websites -> your site -> Edit).
+       Keep data-domains: it stops local files and preview deploys from
+       polluting the data.
+
+       <script defer src="https://cloud.umami.is/script.js"
+               data-website-id="598b4a87-fbc4-4971-a522-f72aa821f511"
+               data-domains="glintlabs.io"></script>
+
+       Nothing else needs to change: track() in the script at the bottom
+       picks up window.umami automatically once this loads. -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -444,6 +457,80 @@
       align-items: center !important;
       justify-content: center !important;
     }
+
+    /* CONTACT FORM */
+    /* slide-down reveal — button row and form swap places, both animated
+       with grid-template-rows so neither jumps */
+    .cta-switch {
+      display: grid; grid-template-rows: 1fr; opacity: 1;
+      transition: grid-template-rows 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.28s ease;
+    }
+    .cta-switch.hidden { grid-template-rows: 0fr; opacity: 0; }
+    .cta-switch-inner { overflow: hidden; min-height: 0; }
+
+    .cf-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 16px; margin-bottom: 26px;
+      padding-bottom: 16px; border-bottom: 1px solid rgba(250,249,246,0.12);
+    }
+    .cf-head-label {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.10em;
+      text-transform: uppercase; color: rgba(250,249,246,0.5);
+    }
+    .cf-close {
+      background: none; border: none; padding: 0; cursor: pointer;
+      font-family: "Outfit", sans-serif; font-size: 14px;
+      color: rgba(250,249,246,0.5); transition: color 0.2s;
+    }
+    .cf-close:hover { color: var(--gold); }
+
+    .cf-wrap {
+      display: grid; grid-template-rows: 0fr;
+      opacity: 0; margin-top: 0;
+      transition: grid-template-rows 0.55s cubic-bezier(0.4,0,0.2,1),
+                  opacity 0.4s ease, margin-top 0.55s cubic-bezier(0.4,0,0.2,1);
+    }
+    .cf-wrap.open { grid-template-rows: 1fr; opacity: 1; margin-top: 8px; }
+    .cf-inner { overflow: hidden; min-height: 0; }
+    /* clears the fixed nav when the form is scrolled into view */
+    .cf-wrap { scroll-margin-top: 110px; scroll-margin-bottom: 40px; }
+    @media (prefers-reduced-motion: reduce) {
+      .cf-wrap, .cta-switch { transition: opacity 0.2s ease; }
+    }
+
+    .contact-form { max-width: 580px; margin: 0 auto; text-align: left; position: relative; z-index: 2; }
+    .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .cf-field { margin-bottom: 18px; }
+    .cf-field label {
+      display: block; margin-bottom: 8px;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.10em; text-transform: uppercase;
+      color: rgba(250,249,246,0.5);
+    }
+    .cf-field input, .cf-field textarea {
+      width: 100%; padding: 14px 16px;
+      font-family: "Outfit", sans-serif; font-size: 16px; color: var(--cream);
+      background: rgba(250,249,246,0.04);
+      border: 1px solid rgba(250,249,246,0.16); border-radius: 10px;
+      outline: none; transition: border-color 0.2s, background 0.2s;
+    }
+    .cf-field input:focus, .cf-field textarea:focus {
+      border-color: var(--gold); background: rgba(250,249,246,0.07);
+    }
+    .cf-field textarea { min-height: 120px; resize: vertical; }
+    .cf-gotcha { position: absolute; left: -9999px; opacity: 0; }
+    .cf-submit { width: 100%; margin-top: 6px; border: none; cursor: pointer; font-size: 16px; display: block; }
+    .cf-submit:disabled { opacity: 0.55; cursor: default; box-shadow: none; }
+    .cf-status { margin-top: 16px; font-size: 15px; line-height: 1.5; }
+    .cf-status.is-ok  { color: var(--gold-light); }
+    .cf-status.is-err { color: #E8A0A0; }
+    .cf-alt { margin-top: 22px; font-size: 15px; color: rgba(250,249,246,0.55); text-align: center; }
+    .cf-alt a { color: var(--gold); text-decoration: none; }
+    .cf-alt a:hover { text-decoration: underline; }
+
+    @media screen and (max-width: 700px) {
+      .cf-row { grid-template-columns: 1fr; gap: 0; }
+    }
+
   </style>
 </head>
 <body>
@@ -742,6 +829,7 @@
 
 
 <!-- CTA -->
+<span id="contact" aria-hidden="true" style="display:block;height:0;scroll-margin-top:110px"></span>
 <section id="cta" class="dark section-pad">
   <canvas id="glitter-cta"></canvas>
   <div class="cta-glow"></div>
@@ -750,9 +838,64 @@
       <span class="eyebrow fu">Get in touch</span>
       <h2 class="cta-title fu d1">Let's set the next<br>standard together</h2>
       <p class="cta-sub fu d2">Luxury has always needed better authentication. We'd love to show you how Glint can work on your product</p>
-      <div class="fu d3 cta-btns">
-        <a href="#" class="btn-outline-large" id="cta-contact-btn">Contact Us</a>
-        <a href="#" class="btn-gold btn-demo-large" id="cta-demo-btn">Book a Demo</a>
+      <div class="cta-switch fu d3" id="cta-switch">
+        <div class="cta-switch-inner">
+          <div class="cta-btns">
+            <a href="#" class="btn-outline-large" id="cta-contact-btn"
+               aria-expanded="false" aria-controls="cf-wrap">Contact Us</a>
+            <a href="#" class="btn-gold btn-demo-large" id="cta-demo-btn">Book a Demo</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="cf-wrap" id="cf-wrap">
+      <div class="cf-inner">
+      <form id="contact-form" class="contact-form"
+            action="https://formspree.io/f/meaqqevd" method="POST">
+        <input type="hidden" name="_subject" value="glintlabs.io — new enquiry">
+        <input type="text" name="_gotcha" class="cf-gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <div class="cf-head">
+          <span class="cf-head-label">Send us a message</span>
+          <button type="button" class="cf-close" id="cf-close">Cancel</button>
+        </div>
+
+        <div class="cf-row">
+          <div class="cf-field">
+            <label for="cf-first">First name</label>
+            <input id="cf-first" name="first_name" type="text" required autocomplete="given-name">
+          </div>
+          <div class="cf-field">
+            <label for="cf-last">Last name</label>
+            <input id="cf-last" name="last_name" type="text" required autocomplete="family-name">
+          </div>
+        </div>
+
+        <div class="cf-row">
+          <div class="cf-field">
+            <label for="cf-email">Work email</label>
+            <input id="cf-email" name="email" type="email" required autocomplete="email">
+          </div>
+          <div class="cf-field">
+            <label for="cf-company">Company</label>
+            <input id="cf-company" name="company" type="text" autocomplete="organization">
+          </div>
+        </div>
+
+        <div class="cf-field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" required></textarea>
+        </div>
+
+        <button type="submit" id="cf-submit" class="btn-gold cf-submit">Send message</button>
+        <p id="cf-status" class="cf-status" role="status" aria-live="polite"></p>
+
+        <p class="cf-alt">
+          Prefer to talk? <a href="#" id="cf-demo-link">Book a demo</a>
+          &nbsp;·&nbsp; or email <a href="#" id="contact-email-link">us directly</a>
+        </p>
+      </form>
+      </div>
       </div>
     </div>
   </div>
@@ -891,7 +1034,7 @@
         el.style.paddingRight = '0';
         el.classList.add('flipped');
         el.dataset.original = el.textContent.trim();
-        el.textContent = 'martin@glintlabs.io';
+        el.textContent = 'hello@glintlabs.io';
         setTimeout(function() {
           el.classList.remove('flipped');
           el.textContent = el.dataset.original;
@@ -905,45 +1048,324 @@
     });
   }
 
-  // CTA button always gets the flip
-  setupFlip(document.getElementById('cta-contact-btn'));
+  // (the old CTA "Contact Us" button was replaced by the contact form;
+  //  setupFlip is still used for any future inline email reveals)
 
   // Nav button: flip on desktop only, plain mailto on mobile
   var navBtn = document.getElementById('nav-contact');
   if (navBtn) {
-    navBtn.href = mailHref;
-    if (window.innerWidth > 960) {
-      setupFlip(navBtn);
-    } else {
-      navBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.open(mailHref, '_self');
-      });
-    }
+    navBtn.href = '#contact';
+    navBtn.addEventListener('click', function () {
+      openContactForm({ source: 'nav', focus: false });
+    });
+  }
+
+  var emailLink = document.getElementById('contact-email-link');
+  if (emailLink) {
+    emailLink.href = mailHref;
+    emailLink.textContent = 'martin@glintlabs.io';
+    /* mailto: links are unreliably caught by automatic outbound tracking */
+    emailLink.addEventListener('click', function () { track('Email click'); });
   }
 
   var linkedInEl = document.getElementById('footer-linkedin');
-  if (linkedInEl) linkedInEl.href = 'https://www.linked' + 'in.com/company/glint-labs-hq/';
+  if (linkedInEl) {
+    linkedInEl.href = 'https://www.linked' + 'in.com/company/glint-labs-hq/';
+    linkedInEl.addEventListener('click', function () { track('LinkedIn click'); });
+  }
 
   // Calendly URL
   var calendlyUrl = ['https://cal', 'endly.com/martin', '-glintlabs/30min'].join('');
 
-  function openDemo(e) {
-    e.preventDefault();
-    window.open(calendlyUrl, '_blank');
+  /* These are <a href="#"> that open Calendly via window.open, so Umami's
+     automatic outbound-link tracking will never see them — it only watches
+     real anchor navigations. Hence the explicit event. */
+  function demoHandler(source) {
+    return function (e) {
+      if (e) e.preventDefault();
+      track('Demo click', { source: source });
+      window.open(calendlyUrl, '_blank');
+    };
   }
 
-  document.getElementById('hero-demo-btn').addEventListener('click', openDemo);
-  document.getElementById('cta-demo-btn').addEventListener('click', openDemo);
+  var heroDemo = document.getElementById('hero-demo-btn');
+  if (heroDemo) heroDemo.addEventListener('click', demoHandler('hero'));
+  var ctaDemo = document.getElementById('cta-demo-btn');
+  if (ctaDemo) ctaDemo.addEventListener('click', demoHandler('cta'));
+  var cfDemo = document.getElementById('cf-demo-link');
+  if (cfDemo) cfDemo.addEventListener('click', demoHandler('form'));
 
   document.querySelectorAll('.ben-item').forEach(item => {
     item.addEventListener('click', () => {
       const isOpen = item.classList.contains('open');
       document.querySelectorAll('.ben-item').forEach(i => i.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
+      if (!isOpen) {
+        item.classList.add('open');
+        /* Only the opening click is recorded. Which of the six people open
+           is a direct read on what they care about. */
+        var h = item.querySelector('h3');
+        track('Benefit expanded', { benefit: h ? h.textContent.trim() : 'unknown' });
+      }
     });
   });
 
+
+  /* === ANALYTICS HOOK ===
+     A no-op until an analytics script is present, so the page works
+     identically with or without one. Umami is the intended provider;
+     the Plausible branch is a fallback so the provider can be swapped
+     without touching a single call site.
+
+     "Contact form opened" minus "Contact form submitted" is your
+     abandonment number. */
+  function track(name, props) {
+    try {
+      if (window.umami && typeof window.umami.track === 'function') {
+        window.umami.track(name, props || undefined);
+      } else if (typeof window.plausible === 'function') {
+        window.plausible(name, props ? { props: props } : undefined);
+      }
+    } catch (e) { /* analytics must never break the page */ }
+  }
+
+  /* === SECTION REACHED ===
+     The site is one page, so pageviews say nothing about how far anyone
+     actually gets. This fires once per section per page load when half of
+     it has been on screen for a moment, which filters out fast scrolling
+     past. Each observer disconnects after firing, so a visitor generates at
+     most five of these. */
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+
+    ['problem', 'solution', 'how-it-works', 'benefits', 'cta'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var timer = null;
+
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            if (timer) return;
+            timer = window.setTimeout(function () {
+              track('Section reached', { section: id });
+              io.disconnect();
+            }, 700);
+          } else if (timer) {
+            window.clearTimeout(timer);
+            timer = null;
+          }
+        });
+      }, { threshold: 0.5 });
+
+      io.observe(el);
+    });
+  })();
+
+  /* === CONTACT FORM REVEAL ===
+     The button row and the form occupy the same slot: opening the form
+     collapses the buttons, closing it brings them back. Both halves carry
+     `inert` when hidden so collapsed content stays out of the tab order. */
+  var cfWrap    = document.getElementById('cf-wrap');
+  var ctaSwitch = document.getElementById('cta-switch');
+  var cfTrigger = document.getElementById('cta-contact-btn');
+  var cfClose   = document.getElementById('cf-close');
+
+  /* Keeps the URL in step with the form's state, so a copied link reflects
+     what is on screen and a reload after Cancel does not reopen the form.
+     Always replaceState, never pushState: opening the form adds no history
+     entry from either entry point, so Back leaves the page rather than being
+     hijacked into closing a form. (The nav link's own anchor jump collapses
+     into a no-op because this runs first and the URL already matches.) */
+  function syncContactHash(open) {
+    if (!window.history || !window.history.replaceState) return;
+    var base = window.location.pathname + window.location.search;
+    var want = open ? base + '#contact' : base;
+    if (window.location.pathname + window.location.search + window.location.hash !== want) {
+      window.history.replaceState(null, '', want);
+    }
+  }
+
+  function setContactOpen(open) {
+    if (!cfWrap || !ctaSwitch) return;
+    cfWrap.classList.toggle('open', open);
+    ctaSwitch.classList.toggle('hidden', open);
+    cfWrap.toggleAttribute('inert', !open);
+    ctaSwitch.toggleAttribute('inert', open);
+    if (cfTrigger) cfTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  function prefersReducedMotion() {
+    return window.matchMedia
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  /* Scrolling starts with the expansion rather than after it, so the page
+     glides instead of jerking once the animation ends.
+
+     It can't be done as one upfront scrollBy: at the moment of the click the
+     document hasn't grown yet, so the browser clamps the scroll to the old
+     page bottom and most of the movement is thrown away. Instead we run a
+     short rAF loop that re-measures each frame and nudges by however much is
+     possible right then. Because the nudge is driven by the form's real
+     geometry, the scroll eases in exact step with the CSS transition — no
+     duration or easing constant to keep in sync.
+
+     Each nudge must be behavior:'instant', NOT 'auto'. Per the CSSOM View
+     spec 'auto' means "use the element's CSS scroll-behavior", and html here
+     sets scroll-behavior:smooth — so 'auto' would queue a fresh smooth scroll
+     every frame, each cancelling the last, and nothing would settle until the
+     loop stopped. */
+  var NAV_CLEARANCE = 110, BOTTOM_CLEARANCE = 40;
+
+  function followExpansion() {
+    var start = (window.performance && performance.now) ? performance.now() : Date.now();
+    var cancelled = false;
+    var USER_SCROLL = ['wheel', 'touchmove'];
+
+    /* If the visitor grabs the page mid-animation, stop steering it.
+       Deliberately not listening for keydown: the name field is focused by
+       now, and typing into it must not cancel the scroll. */
+    function cancel() { cancelled = true; }
+    function unbind() {
+      USER_SCROLL.forEach(function (e) { window.removeEventListener(e, cancel); });
+    }
+    USER_SCROLL.forEach(function (e) {
+      window.addEventListener(e, cancel, { passive: true });
+    });
+
+    function step(now) {
+      if (cancelled) { unbind(); return; }
+      var rect = cfWrap.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var delta = 0;
+
+      if (rect.bottom + BOTTOM_CLEARANCE > vh) {
+        delta = rect.bottom + BOTTOM_CLEARANCE - vh;
+        /* never pull the top of the form under the fixed nav */
+        if (rect.top - delta < NAV_CLEARANCE) delta = rect.top - NAV_CLEARANCE;
+      } else if (rect.top < NAV_CLEARANCE) {
+        delta = rect.top - NAV_CLEARANCE;
+      }
+      if (Math.abs(delta) > 0.5) window.scrollBy({ top: delta, behavior: 'instant' });
+
+      if ((now || Date.now()) - start < 750) window.requestAnimationFrame(step);
+      else unbind();
+    }
+    window.requestAnimationFrame(step);
+  }
+
+  function openContactForm(opts) {
+    if (!cfWrap || cfWrap.classList.contains('open')) return;
+    setContactOpen(true);
+    syncContactHash(true);
+    track('Contact form opened', { source: (opts && opts.source) || 'unknown' });
+
+    if (prefersReducedMotion()) {
+      window.setTimeout(function () {
+        cfWrap.scrollIntoView({ behavior: 'instant', block: 'nearest' });
+      }, 600);
+    } else if (window.requestAnimationFrame) {
+      followExpansion();
+    }
+
+    if (!opts || opts.focus !== false) {
+      var first = document.getElementById('cf-first');
+      if (first) first.focus({ preventScroll: true });
+    }
+  }
+
+  /* Closing never resets the fields — anything already typed survives a
+     reopen. */
+  function closeContactForm(opts) {
+    if (!cfWrap || !cfWrap.classList.contains('open')) return;
+    setContactOpen(false);
+    if (!opts || opts.updateHash !== false) syncContactHash(false);
+    track('Contact form dismissed');
+    if (!opts || opts.focus !== false) {
+      if (cfTrigger) cfTrigger.focus({ preventScroll: true });
+    }
+  }
+
+  if (cfWrap) cfWrap.setAttribute('inert', '');
+
+  if (cfTrigger) {
+    cfTrigger.addEventListener('click', function (e) {
+      e.preventDefault();
+      openContactForm({ source: 'cta' });
+    });
+  }
+  if (cfClose) cfClose.addEventListener('click', closeContactForm);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeContactForm();
+  });
+
+  /* deep link: glintlabs.io/#contact opens the form directly, so a
+     forwarded link still lands somewhere useful */
+  if (window.location.hash === '#contact') {
+    openContactForm({ source: 'deeplink', focus: false });
+  }
+
+  /* Covers forward navigation and hand-edited URLs. replaceState does not
+     fire hashchange, so this cannot loop with syncContactHash. */
+  window.addEventListener('hashchange', function () {
+    if (window.location.hash === '#contact') {
+      openContactForm({ source: 'hash', focus: false });
+    } else {
+      closeContactForm({ updateHash: false, focus: false });
+    }
+  });
+
+  /* === CONTACT FORM === */
+  (function () {
+    var form = document.getElementById('contact-form');
+    if (!form) return;
+    var status = document.getElementById('cf-status');
+    var submit = document.getElementById('cf-submit');
+
+    /* First focus in any field. Splits the funnel into opened -> started ->
+       submitted, so idle curiosity is distinguishable from an abandoned
+       attempt. Fires once per page load. */
+    var started = false;
+    form.addEventListener('focusin', function (e) {
+      if (started || !e.target.name || e.target.name.charAt(0) === '_') return;
+      started = true;
+      track('Contact form started');
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var label = submit.textContent;
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
+      status.className = 'cf-status';
+      status.textContent = '';
+
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(function (res) {
+        if (!res.ok) throw new Error('bad response');
+        form.reset();
+        status.className = 'cf-status is-ok';
+        status.textContent = 'Thank you — your message has been sent. We usually reply within one working day.';
+        track('Contact form submitted');
+      })
+      .catch(function (err) {
+        status.className = 'cf-status is-err';
+        status.textContent = 'Something went wrong. Please try again, or use the email link below.';
+        /* Your only conversion path failing silently is the worst case here:
+           you would notice weeks later by wondering why it had gone quiet. */
+        track('Contact form error', { reason: (err && err.message) || 'unknown' });
+      })
+      .then(function () {
+        submit.disabled = false;
+        submit.textContent = label;
+      });
+    });
+  })();
 
   window.addEventListener('scroll', () => {
     document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 70);
